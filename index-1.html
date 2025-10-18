@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aditya Hostel — Comfortable Student Living</title>
+  <meta name="description" content="Aditya Hostel — comfortable student accommodation with modern facilities, security, and a welcoming community." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* === Theme variables (Hostel-inspired) === */
+    :root{
+      --bg: #f9fbfd;
+      --surface: #ffffff;
+      --primary-a: #2a7de1;
+      --primary-b: #1a4d8c;
+      --accent: #ff7e5f;
+      --muted: #6b7280;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow-sm: 0 8px 26px rgba(2,6,23,0.06);
+      --shadow-md: 0 18px 60px rgba(2,6,23,0.10);
+      --maxw: 1180px;
+      --transition: 260ms cubic-bezier(.2,.9,.2,1);
+      --hero-img: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=80');
+    }
+
+    /* === Reset & base === */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      background:var(--bg);
+      color:#1a365d;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      scroll-behavior:smooth;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:var(--maxw);margin:0 auto;padding:1rem}
+
+    /* === Header === */
+    .navbar {
+      background: linear-gradient(90deg, var(--primary-a), var(--primary-b));
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-md);
+    }
+    .nav-container{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem}
+    .logo{display:flex;gap:.75rem;align-items:center}
+    .logo .mark{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;background:rgba(255,255,255,0.15)}
+    .logo h1{margin:0;font-size:18px;font-weight:800}
+    .nav-links{display:flex;gap:.6rem;align-items:center}
+    .nav-links a{color:rgba(255,255,255,0.95);padding:.45rem .7rem;border-radius:10px;font-weight:600;transition:all var(--transition)}
+    .nav-links a:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
+    .cta{background:var(--accent);color:white;padding:.45rem .9rem;border-radius:10px;font-weight:800;box-shadow:0 8px 30px rgba(255,111,97,0.14)}
+    @media (max-width:760px){ .nav-links a:not(.cta){display:none} }
+
+    /* === Hero === */
+    .hero{position:relative;min-height:380px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:white}
+    .hero::before{content:"";position:absolute;inset:0;background-image:var(--hero-img);background-size:cover;background-position:center;filter:brightness(.7) saturate(1.1)}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.5));}
+    .hero-inner{position:relative;z-index:2;max-width:var(--maxw);padding:1.5rem 1rem;display:grid;grid-template-columns:1fr 380px;gap:1.5rem;align-items:center}
+    .hero-left h2{font-size:32px;margin:0 0 .5rem;line-height:1.02;font-weight:800;text-shadow:0 6px 20px rgba(0,0,0,0.45)}
+    .hero-left p{margin:0 0 1rem;color:rgba(255,255,255,0.95);font-size:15px;max-width:62ch}
+    .hero-ctas{display:flex;gap:.6rem;flex-wrap:wrap}
+    .hero-card{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border-radius:12px;padding:1.2rem;border:1px solid rgba(255,255,255,0.2);box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+
+    /* === Banner carousel === */
+    .main-banner{position:relative;max-width:var(--maxw);margin:1rem auto;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-md)}
+    .banner-slides{position:relative;height:160px}
+    .banner-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:translateY(6px);transition:opacity .7s ease, transform .7s ease}
+    .banner-slide.active{opacity:1;transform:none;z-index:2}
+    .banner-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.1));}
+    .banner-content{position:absolute;left:28px;bottom:20px;color:white;z-index:3;max-width:680px}
+    .banner-content h3{margin:0;font-size:16px;text-shadow:0 8px 30px rgba(0,0,0,0.45)}
+    .banner-actions{margin-top:.5rem;display:flex;gap:.5rem}
+    .banner-nav{position:absolute;left:12px;bottom:8px;display:flex;gap:.5rem;z-index:4}
+    .banner-dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,0.5);cursor:pointer;border:1px solid rgba(255,255,255,0.12)}
+    .banner-dot.active{background:#fff}
+    .banner-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.12);border:none;color:white;padding:.5rem;border-radius:999px;cursor:pointer;font-size:12px}
+    .banner-arrow.left{left:8px}
+    .banner-arrow.right{right:8px}
+
+    /* === Sections & cards === */
+    .section{padding:1.5rem 0}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+    .section-title{font-size:22px;color:var(--primary-b);margin:0;font-weight:700}
+    .subtle{color:var(--muted);font-size:14px}
+    .card{background:var(--surface);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow-sm);transition:transform var(--transition)}
+    .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+
+    /* === Rooms grid === */
+    .rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .room{overflow:hidden;border-radius:12px;background:#fff;display:flex;flex-direction:column}
+    .room img.room-img{height:180px;width:100%;object-fit:cover;transition:transform .45s ease}
+    .room:hover img.room-img{transform:scale(1.03)}
+    .room-body{padding:1rem;flex:1;display:flex;flex-direction:column;gap:.4rem}
+    .room h3{margin:0;font-size:18px}
+    .room p{margin:0;color:var(--muted);font-size:14px}
+    .room-meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+    .badge{display:inline-block;padding:.28rem .6rem;border-radius:999px;background:linear-gradient(90deg,#e6f9ff,#fff7f5);color:var(--primary-b);font-weight:700;font-size:13px}
+
+    /* === Team Section - Minimal Design === */
+    .team-minimal{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+    .team-member-minimal{text-align:center;padding:1rem;border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);transition:all var(--transition)}
+    .team-member-minimal:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+    .team-member-minimal .avatar{width:60px;height:60px;border-radius:50%;margin:0 auto .5rem;background:linear-gradient(135deg, var(--primary-a), var(--primary-b));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px}
+    .team-member-minimal h4{margin:0;font-size:14px;font-weight:600}
+    .team-member-minimal p{margin:0;color:var(--muted);font-size:12px}
+
+    /* === Availability-style cards === */
+    .availability-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+    .avail-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:1rem;border:1px solid #eef2f7;display:flex;flex-direction:column;gap:.6rem;box-shadow:var(--shadow-sm)}
+    .avail-top{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+    .avail-title{font-size:16px;font-weight:800;color:var(--primary-b)}
+    .avail-price{font-weight:800;color:var(--accent)}
+    .progress-wrap{background:#f1f8fb;border-radius:999px;padding:4px;height:14px;overflow:hidden}
+    .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary-a),var(--primary-b));width:0;transition:width 900ms cubic-bezier(.2,.9,.2,1)}
+    .avail-stats{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+    .avail-actions{display:flex;gap:.5rem;margin-top:.6rem}
+    .pill{padding:.36rem .6rem;border-radius:999px;border:1px solid rgba(0,0,0,0.04);font-weight:700;font-size:13px}
+
+    /* === Facilities, gallery, reviews === */
+    .facilities{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+    .facility{display:flex;align-items:center;gap:.75rem;padding:1rem;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #eef7fa}
+    .facility img{width:48px;height:48px;border-radius:8px;flex-shrink:0}
+
+    .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .gallery img{height:140px;object-fit:cover;border-radius:8px;transition:transform .3s}
+    .gallery img:hover{transform:scale(1.02);cursor:pointer}
+
+    .compare table{width:100%;border-collapse:collapse}
+    .compare th,.compare td{padding:.6rem;border:1px solid #eef3f7;text-align:center}
+    .compare th{background:linear-gradient(90deg,#f7fbff,#fff);font-weight:700}
+
+    .reviews-wrap{position:relative}
+    .reviews{display:grid;grid-auto-flow:column;grid-auto-columns:320px;gap:1rem;overflow:hidden;padding:1rem 0}
+    .review{background:linear-gradient(180deg,#fff,#fbfdff);padding:1rem;border-radius:10px;border:1px solid #eef2f7;min-width:280px}
+    .review p{margin:0;color:var(--muted)}
+    .reviews-controls{display:flex;gap:.5rem;align-items:center}
+    .small-btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:.4rem .6rem;border-radius:8px;cursor:pointer}
+
+    details{background:#fff;border-radius:10px;padding:.9rem;border:1px solid #eef2f7}
+    summary{font-weight:700;cursor:pointer}
+    details p{margin:.5rem 0 0;color:var(--muted)}
+
+    form{display:grid;gap:.6rem}
+    input,select,textarea{padding:.7rem;border-radius:8px;border:1px solid #e6eef6}
+    .btn{background:linear-gradient(90deg,var(--primary-a),var(--primary-b));color:white;padding:.6rem .9rem;border-radius:10px;border:none;cursor:pointer;font-weight:700;box-shadow:0 12px 40px rgba(42,125,225,0.08)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,111,97,0.14);color:var(--accent);padding:.55rem .8rem;border-radius:8px}
+    .thanks{display:none;margin-top:1rem;font-weight:800;color:var(--success)}
+
+    .floating-quick{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--primary-b),var(--accent));color:white;padding:.6rem .8rem;border-radius:12px;box-shadow:0 12px 30px rgba(6,12,28,0.18);cursor:pointer;border:1px solid rgba(255,255,255,0.06);z-index:998}
+    .lightbox{position:fixed;inset:0;background:rgba(2,6,23,0.72);display:none;align-items:center;justify-content:center;padding:1rem;z-index:9999}
+    .lightbox img{max-width:100%;max-height:92vh;border-radius:12px}
+
+    footer{padding:2rem 0;margin-top:2rem;background:linear-gradient(90deg,var(--primary-a),var(--primary-b));color:white;border-top-left-radius:20px;border-top-right-radius:20px}
+    footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--maxw);margin:0 auto;padding:0 1rem}
+
+    @media (max-width:1080px){
+      .rooms{grid-template-columns:repeat(2,1fr)}
+      .facilities{grid-template-columns:repeat(2,1fr)}
+      .gallery{grid-template-columns:repeat(3,1fr)}
+      .reviews{grid-template-columns:repeat(2,1fr)}
+      .availability-grid{grid-template-columns:repeat(2,1fr)}
+      .team-minimal{grid-template-columns:repeat(3,1fr)}
+    }
+    @media (max-width:760px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero{min-height:480px}
+      .rooms{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      nav.links a{display:none}
+      .availability-grid{grid-template-columns:1fr}
+      .reviews{grid-auto-columns:260px}
+      .team-minimal{grid-template-columns:repeat(2,1fr)}
+    }
+
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+    .small{font-size:13px;color:var(--muted)}
+    .sr-only{position:absolute !important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .section-banner{height:60px;border-radius:12px;display:flex;align-items:center;background-size:cover;background-position:center;margin-bottom:1.5rem;position:relative}
+    .section-banner::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.4);border-radius:12px}
+    .section-banner h4{position:relative;z-index:2;color:white;font-size:16px;margin:0;font-weight:700}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar" role="navigation" aria-label="Main">
+    <div class="nav-container">
+      <div class="logo">
+        <div class="mark" aria-hidden="true">AH</div>
+        <div>
+          <h1>Aditya Hostel</h1>
+          <div class="small" style="color:rgba(255,255,255,0.9)">Comfortable stays near campus</div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#rooms">Rooms</a>
+        <a href="#facilities">Facilities</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#team">Our Team</a>
+        <a href="#contact" class="cta">Book Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO - Rearranged Layout -->
+  <section class="hero" aria-label="Hero section">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-inner container">
+      <div class="hero-left">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+          <div style="background:rgba(255,255,255,0.2);padding:.2rem .6rem;border-radius:999px;font-weight:700;color:white;font-size:12px">🏆 Trusted by 500+ Students</div>
+        </div>
+        <h2>Your Home Away From Home</h2>
+        <p class="small">Experience comfortable, secure, and vibrant student living at Aditya Hostel. Modern amenities, 24/7 security, and a supportive community await you.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="#rooms">Explore Rooms</a>
+          <button class="btn-ghost" id="heroBook">Virtual Tour</button>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,0.2);padding:.28rem .6rem;border-radius:999px;font-weight:700;color:white;font-size:12px">✓ 24/7 Security</div>
+          <div style="background:rgba(255,255,255,0.2);padding:.28rem .6rem;border-radius:999px;font-weight:700;color:white;font-size:12px">✓ High-speed Wi-Fi</div>
+          <div style="background:rgba(255,255,255,0.2);padding:.28rem .6rem;border-radius:999px;font-weight:700;color:white;font-size:12px">✓ Gym & Sports</div>
+          <div style="background:rgba(255,255,255,0.2);padding:.28rem .6rem;border-radius:999px;font-weight:700;color:white;font-size:12px">✓ Study Spaces</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="hero-card" aria-hidden="false">
+          <div style="text-align:center;margin-bottom:1rem">
+            <div style="font-weight:800;font-size:22px;color:white">Book Your Stay</div>
+            <div class="small" style="color:rgba(255,255,255,0.9)">Limited spots available</div>
+          </div>
+          
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+            <div>
+              <div class="small" style="color:rgba(255,255,255,0.9)">Starting From</div>
+              <div style="font-weight:800;font-size:18px;color:white">₹6,500 <span class="small" style="color:white;opacity:.95">/ month</span></div>
+            </div>
+            <div style="text-align:right">
+              <div class="small" style="color:rgba(255,255,255,0.9)">Available</div>
+              <div style="font-weight:800;color:white;background:rgba(255,255,255,0.15);padding:.25rem .6rem;border-radius:8px" id="heroAvailable">—</div>
+            </div>
+          </div>
+
+          <form id="heroQuickForm" style="display:grid;gap:.5rem" aria-label="Quick reservation">
+            <input type="text" id="hq_name" placeholder="Full name" required aria-label="Full name" style="background:rgba(255,255,255,0.9);border:none" />
+            <input type="tel" id="hq_phone" placeholder="Phone number" required aria-label="Phone number" style="background:rgba(255,255,255,0.9);border:none" />
+            <select id="hq_type" aria-label="Room type" style="background:rgba(255,255,255,0.9);border:none">
+              <option value="Shared Room">Shared Room</option>
+              <option value="Private Room">Private Room</option>
+              <option value="Deluxe Suite">Deluxe Suite</option>
+            </select>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn" type="submit" style="flex:1">Reserve Now</button>
+              <button class="btn-ghost" type="button" id="heroContact" style="color:white;border-color:rgba(255,255,255,0.3)">Contact</button>
+            </div>
+            <div id="hq_msg" class="small" style="display:none;color:rgba(255,255,255,0.9);text-align:center" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Banner carousel -->
+  <div class="main-banner" role="region" aria-label="Main banner carousel">
+    <div class="banner-slides" id="bannerSlides">
+      <div class="banner-slide active" data-index="0" style="background-image:url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1600&q=80');">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+          <h3>Aditya Hostel — Comfortable Stay</h3>
+          <div class="banner-actions">
+            <a class="btn" href="#rooms">See Rooms</a>
+            <a class="btn-ghost" href="#contact">Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-slide" data-index="1" style="background-image:url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1600&q=80');background-position:center;">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+          <h3>Modern Rooms & Study Spaces</h3>
+          <div class="banner-actions">
+            <a class="btn" href="#facilities">View Facilities</a>
+            <a class="btn-ghost" href="#gallery">Gallery</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-slide" data-index="2" style="background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80');background-position:center;">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+          <h3>Safe & Secure Environment</h3>
+          <div class="banner-actions">
+            <a class="btn" href="#compare">Compare</a>
+            <a class="btn-ghost" href="#contact">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <button class="banner-arrow left" id="bannerPrev" aria-label="Previous slide">&#10094;</button>
+      <button class="banner-arrow right" id="bannerNext" aria-label="Next slide">&#10095;</button>
+
+      <div class="banner-nav" id="bannerDots" aria-hidden="false" style="right:12px;left:auto;">
+        <div class="banner-dot active" data-dot="0" tabindex="0" role="button" aria-label="Slide 1"></div>
+        <div class="banner-dot" data-dot="1" tabindex="0" role="button" aria-label="Slide 2"></div>
+        <div class="banner-dot" data-dot="2" tabindex="0" role="button" aria-label="Slide 3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="container" role="main">
+
+    <!-- ROOMS section -->
+    <section id="rooms" class="section" aria-labelledby="rooms-heading">
+      <div class="section-banner" style="background-image:url('https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1600&q=80');">
+        <div style="padding-left:18px"><h4>Rooms — Comfort for Every Budget</h4></div>
+      </div>
+
+      <div class="section-head">
+        <h2 id="rooms-heading" class="section-title">Rooms & Pricing</h2>
+        <div class="subtle">Choose a room that fits your needs</div>
+      </div>
+
+      <div class="rooms" id="roomList" role="list">
+        <!-- populated by JS -->
+      </div>
+
+      <!-- Availability-like summary -->
+      <div class="card availability" aria-labelledby="availability-head" style="margin-top:1rem">
+        <h3 id="availability-head" style="margin-top:0">Room Availability</h3>
+        <div class="availability-grid" id="availabilityGrid" role="list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- FACILITIES -->
+    <section id="facilities" class="section" aria-labelledby="facilities-heading">
+      <div class="section-banner" style="background-image:url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=1600&q=80');">
+        <div style="padding-left:18px"><h4>Facilities — Study, Play & Relax</h4></div>
+      </div>
+
+      <div class="section-head">
+        <h2 id="facilities-heading" class="section-title">Facilities</h2>
+        <div class="subtle">Designed for a balanced student life</div>
+      </div>
+
+      <div class="grid card" style="padding:1rem">
+        <div class="facilities" role="list">
+          <div class="facility"><img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=120&q=60" alt="wifi"><div><strong>High-speed Wi-Fi</strong><div class="small muted">Dedicated bandwidth for study & streaming</div></div></div>
+          <div class="facility"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=120&q=60" alt="mess"><div><strong>Nutritious Mess</strong><div class="small muted">Hygienic veg & non-veg options</div></div></div>
+          <div class="facility"><img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=120&q=60" alt="laundry"><div><strong>Laundry Service</strong><div class="small muted">On-site weekly laundry</div></div></div>
+          <div class="facility"><img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?auto=format&fit=crop&w=120&q=60" alt="study hall"><div><strong>24×7 Study Hall</strong><div class="small muted">Quiet zones & group rooms</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section" aria-labelledby="gallery-heading">
+      <div class="section-banner" style="background-image:url('https://images.unsplash.com/photo-1529472119195-0d5b7f5a7e8f?auto=format&fit=crop&w=1600&q=80');">
+        <div style="padding-left:18px"><h4>Gallery — Explore Our Spaces</h4></div>
+      </div>
+
+      <div class="section-head">
+        <h2 id="gallery-heading" class="section-title">Gallery</h2>
+        <div class="subtle">Photos from campus life & our facilities</div>
+      </div>
+
+      <div class="gallery card" style="padding:8px">
+        <img src="https://images.unsplash.com/photo-1509057199576-632a47484ece?auto=format&fit=crop&w=1200&q=80" alt="Exterior" data-large="https://images.unsplash.com/photo-1509057199576-632a47484ece?auto=format&fit=crop&w=2000&q=80">
+        <img src="https://images.unsplash.com/photo-1505691723518-36f772e2f4b6?auto=format&fit=crop&w=1200&q=80" alt="Library" data-large="https://images.unsplash.com/photo-1505691723518-36f772e2f4b6?auto=format&fit=crop&w=2000&q=80">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80" alt="Study Hall" data-large="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2000&q=80">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80" alt="Evening" data-large="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=2000&q=80">
+      </div>
+    </section>
+
+    <!-- TEAM SECTION - Minimal Design -->
+    <section id="team" class="section" aria-labelledby="team-heading">
+      <div class="section-head">
+        <h2 id="team-heading" class="section-title">Our Team</h2>
+        <div class="subtle">Meet our dedicated team members</div>
+      </div>
+
+      <div class="team-minimal" role="list">
+        <div class="team-member-minimal" role="listitem">
+          <div class="avatar">AG</div>
+          <h4>Ananya Greshmi</h4>
+          <p>Hostel Manager</p>
+        </div>
+        <div class="team-member-minimal" role="listitem">
+          <div class="avatar">K</div>
+          <h4>Kavya</h4>
+          <p>Student Coordinator</p>
+        </div>
+        <div class="team-member-minimal" role="listitem">
+          <div class="avatar">H</div>
+          <h4>Harika</h4>
+          <p>Facilities Manager</p>
+        </div>
+        <div class="team-member-minimal" role="listitem">
+          <div class="avatar">V</div>
+          <h4>Valiva</h4>
+          <p>Mess Supervisor</p>
+        </div>
+        <div class="team-member-minimal" role="listitem">
+          <div class="avatar">AD</div>
+          <h4>Anusha Durga</h4>
+          <p>Warden</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section id="compare" class="section" aria-labelledby="compare-heading">
+      <div class="section-head">
+        <h2 id="compare-heading" class="section-title">Compare Room Types</h2>
+        <div class="subtle">Key differences at a glance</div>
+      </div>
+
+      <div class="compare card">
+        <table aria-label="Comparison table">
+          <thead><tr><th>Feature</th><th>Deluxe Suite</th><th>Private Room</th><th>Shared Room</th></tr></thead>
+          <tbody>
+            <tr><td>Capacity</td><td>2</td><td>1</td><td>3–4</td></tr>
+            <tr><td>Privacy</td><td>Medium</td><td>High</td><td>Low</td></tr>
+            <tr><td>AC</td><td>Yes</td><td>Yes</td><td>Optional</td></tr>
+            <tr><td>Wi-Fi</td><td>150 Mbps</td><td>100 Mbps</td><td>50 Mbps</td></tr>
+            <tr><td>Price</td><td>₹18,000</td><td>₹12,000</td><td>₹6,500</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="section" aria-labelledby="reviews-heading">
+      <div class="section-head">
+        <h2 id="reviews-heading" class="section-title">Student Reviews</h2>
+        <div class="subtle">What students say about us</div>
+      </div>
+
+      <div class="reviews-wrap card">
+        <div class="reviews" id="reviewsTrack" role="list">
+          <div class="review" role="listitem"><p>"Great location and consistent Wi-Fi — helped during online classes."</p><strong>- Riya</strong></div>
+          <div class="review" role="listitem"><p>"Mess portions are good and the staff are helpful."</p><strong>- Arjun</strong></div>
+          <div class="review" role="listitem"><p>"Study hall and quiet zones made finals easier."</p><strong>- Meera</strong></div>
+          <div class="review" role="listitem"><p>"Clean rooms, friendly warden and secure building."</p><strong>- Sameer</strong></div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.6rem">
+          <div class="reviews-controls">
+            <button class="small-btn" id="revPrev" aria-label="Previous reviews">&larr;</button>
+            <button class="small-btn" id="revNext" aria-label="Next reviews">&rarr;</button>
+          </div>
+          <div class="small muted">Students trust score: <strong>4.6/5</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section" aria-labelledby="faq-heading">
+      <div class="section-head">
+        <h2 id="faq-heading" class="section-title">FAQ</h2>
+        <div class="subtle">Common questions answered</div>
+      </div>
+
+      <div style="display:grid;gap:.8rem">
+        <details class="card"><summary>Is Wi-Fi included?</summary><p>Yes — high-speed Wi-Fi is included in all plans and supports video classes & streaming.</p></details>
+        <details class="card"><summary>Are visitors allowed?</summary><p>Day visitors allowed with ID. Overnight guests require prior approval.</p></details>
+        <details class="card"><summary>Payment options?</summary><p>Monthly, quarterly and semester plans; UPI, bank transfer, and cash accepted.</p></details>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section id="newsletter" class="section" aria-labelledby="newsletter-heading">
+      <div class="section-head">
+        <h2 id="newsletter-heading" class="section-title">Stay Updated</h2>
+        <div class="subtle">Offers, vacancies and events</div>
+      </div>
+
+      <div class="card" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px"><p class="small muted" style="margin:0">Sign up for updates and special offers.</p></div>
+        <form id="newsletterForm" style="display:flex;gap:.6rem;min-width:260px" aria-label="Newsletter signup">
+          <input type="email" id="newsletterEmail" placeholder="Your email" required style="flex:1" aria-label="Email address">
+          <button class="btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CONTACT & BOOKING -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <div class="section-banner" style="background-image:url('https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=1600&q=80');height:60px;margin-bottom:1rem;align-items:center;">
+        <div style="padding-left:18px"><h4>Contact & Book — Ready to Move In?</h4></div>
+      </div>
+
+      <div class="section-head">
+        <h2 id="contact-heading" class="section-title">Contact & Book</h2>
+        <div class="subtle">Enquire or book a room directly</div>
+      </div>
+
+      <div class="card" style="display:grid;grid-template-columns:1fr 420px;gap:1rem;align-items:start">
+        <div>
+          <p style="margin:0;color:var(--muted)">Address: 12 Campus Road, Near Central Library, City — 500001</p>
+          <p style="margin:.6rem 0">Phone: <a href="tel:+911234567890">+91 12345 67890</a></p>
+          <p style="margin:.6rem 0">Email: <a href="mailto:hello@adityahostel.example">hello@adityahostel.example</a></p>
+
+          <hr style="border:none;border-top:1px solid #eef6f9;margin:1rem 0">
+
+          <h4 style="margin:.2rem 0">Booking Form</h4>
+          <form id="bookingForm" aria-label="Booking form">
+            <input type="text" id="bname" placeholder="Full name" required aria-label="Full name" />
+            <input type="email" id="bemail" placeholder="Email address" required aria-label="Email address" />
+            <input type="tel" id="bphone" placeholder="Phone number" required aria-label="Phone number" />
+            <select id="btype" required aria-label="Select room type">
+              <option value="">Select room type</option>
+              <option value="Shared Room">Shared Room</option>
+              <option value="Private Room">Private Room</option>
+              <option value="Deluxe Suite">Deluxe Suite</option>
+            </select>
+            <input type="date" id="bdate" aria-label="Move-in date"/>
+            <textarea id="bnotes" placeholder="Notes (allergies, requests)" aria-label="Notes"></textarea>
+
+            <div style="display:flex;gap:.6rem;align-items:center;margin-top:.4rem">
+              <button class="btn" type="submit">Confirm Booking</button>
+              <button class="btn-ghost" type="button" id="bookReset">Book Another</button>
+              <div id="bookStatus" class="small muted" style="margin-left:auto" role="status" aria-live="polite"></div>
+            </div>
+          </form>
+
+          <div id="bookThanks" class="thanks" role="status" aria-live="polite">🙏 Thanks for booking with <strong>Aditya Hostel</strong>! We will contact you shortly.</div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4 style="margin:.2rem 0">Map</h4>
+            <iframe title="Aditya Hostel map" loading="lazy" style="width:100%;height:220px;border:0;border-radius:8px" src="https://maps.google.com/maps?q=12%20Campus%20Road,%20City%20500001&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+          </div>
+
+          <div style="height:1rem"></div>
+
+          <div class="card">
+            <h4 style="margin:.2rem 0">Quick Info</h4>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;gap:.4rem">
+              <li class="small muted">🕒 Flexible check-ins</li>
+              <li class="small muted">🔑 24×7 Security</li>
+              <li class="small muted">🍽️ Mess: Veg & Non-Veg</li>
+              <li class="small muted">🧺 Laundry: On-site</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section style="margin-top:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div class="small muted">Need help? Call us at <a href="tel:+911234567890">+91 12345 67890</a></div>
+        <div><a href="#contact" class="cta">Enquire / Book</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <button id="quickContact" class="floating-quick" aria-label="Quick contact">📞 Quick Contact</button>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+    <img src="" alt="Preview">
+  </div>
+
+  <footer role="contentinfo">
+    <div class="wrap">
+      <div style="max-width:var(--maxw);margin:0 auto;padding:0 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem">
+        <div>
+          <div style="font-weight:800;font-size:18px">Aditya Hostel</div>
+          <div class="small" style="margin-top:.4rem;color:rgba(255,255,255,0.92)">© <span id="year"></span> Aditya Hostel — All rights reserved</div>
+          <div style="margin-top:.6rem;color:rgba(255,255,255,0.95)">🙏 Thank you for choosing Aditya Hostel. Your comfort & safety are our priority.</div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:center">
+          <a href="#" style="color:white;opacity:.95">Terms</a>
+          <a href="#" style="color:white;opacity:.95">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Helper selectors
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+    $('#year').textContent = new Date().getFullYear();
+
+    // Banner carousel
+    (function(){
+      const slides = $$('.banner-slide');
+      const dots = $$('#bannerDots .banner-dot');
+      const prev = $('#bannerPrev'), next = $('#bannerNext');
+      let idx = 0, timer = null;
+      function show(i){
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[i].classList.add('active');
+        dots[i].classList.add('active');
+        idx = i;
+      }
+      function nextSlide(){ show((idx+1) % slides.length); }
+      function prevSlide(){ show((idx-1 + slides.length) % slides.length); }
+      function start(){ timer = setInterval(nextSlide, 5000); }
+      function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+      dots.forEach(d => d.addEventListener('click', ()=>{ stop(); show(parseInt(d.dataset.dot)); start(); }));
+      dots.forEach(d => d.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.click(); } }));
+      next.addEventListener('click', ()=>{ stop(); nextSlide(); start(); });
+      prev.addEventListener('click', ()=>{ stop(); prevSlide(); start(); });
+      show(0); start();
+      $('.main-banner').addEventListener('mouseenter', stop);
+      $('.main-banner').addEventListener('mouseleave', start);
+    })();
+
+    // Gallery lightbox
+    (function(){
+      const lightbox = $('#lightbox'); const lbImg = lightbox.querySelector('img');
+      $$('.gallery img').forEach(img => {
+        img.style.cursor='zoom-in';
+        img.addEventListener('click', ()=> {
+          lbImg.src = img.dataset.large || img.src;
+          lightbox.style.display = 'flex';
+          lightbox.setAttribute('aria-hidden','false');
+        });
+      });
+      lightbox.addEventListener('click', e => {
+        if(e.target === lightbox || e.target === lbImg){ lightbox.style.display = 'none'; lbImg.src=''; lightbox.setAttribute('aria-hidden','true'); }
+      });
+      document.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(lightbox.style.display === 'flex'){ lightbox.style.display='none'; lbImg.src=''; } } });
+    })();
+
+    // Seed rooms data and populate UI
+    (function(){
+      const rooms = [
+        { id:'r1', name:'Shared Room', desc:'Bunk-style shared rooms with lockers, study table and optional AC.', capacity:'3–4', price:'₹6,500 / month', total:20, filled:12, img:'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1400&q=80' },
+        { id:'r2', name:'Private Room', desc:'Single occupancy, attached bathroom and study desk.', capacity:'1', price:'₹12,000 / month', total:15, filled:10, img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=80' },
+        { id:'r3', name:'Deluxe Suite', desc:'Spacious suite with balcony, extra storage and premium bedding.', capacity:'2', price:'₹18,000 / month', total:5, filled:3, img:'https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=1400&q=80' }
+      ];
+
+      const roomList = $('#roomList');
+      const grid = $('#availabilityGrid');
+
+      // create room card
+      function createRoomCard(room){
+        const el = document.createElement('article');
+        el.className = 'room card';
+        el.setAttribute('role','listitem');
+        el.dataset.room = room.name;
+        el.dataset.total = room.total;
+        el.dataset.filled = room.filled;
+        el.innerHTML = `
+          <img class="room-img" src="${room.img}" alt="${room.name}">
+          <div class="room-body">
+            <h3>${room.name}</h3>
+            <p class="small muted">${room.desc}</p>
+            <div style="margin-top:.6rem" class="room-meta">
+              <div class="small muted">Capacity: ${room.capacity}</div>
+              <div class="badge">${room.price}</div>
+            </div>
+          </div>
+        `;
+        return el;
+      }
+
+      function createAvailCard(room){
+        const type = room.name;
+        const total = room.total;
+        const filled = room.filled;
+        const available = Math.max(0, total - filled);
+        const card = document.createElement('div');
+        card.className = 'avail-card';
+        card.setAttribute('data-type', type);
+
+        card.innerHTML = `
+          <div class="avail-top">
+            <div>
+              <div class="avail-title">${type}</div>
+              <div class="small muted">Capacity & features</div>
+            </div>
+            <div style="text-align:right">
+              <div class="avail-price">${room.price}</div>
+              <div class="small muted">Per month</div>
+            </div>
+          </div>
+
+          <div class="progress-wrap" aria-hidden="true" title="Occupancy">
+            <div class="progress-bar" style="width:0%"></div>
+          </div>
+
+          <div class="avail-stats">
+            <div class="small muted">Filled: <strong class="stat-filled">${filled}</strong></div>
+            <div class="small muted">Available: <strong class="stat-available">${available}</strong></div>
+            <div class="small muted">Total: <strong class="stat-total">${total}</strong></div>
+          </div>
+
+          <div class="avail-actions">
+            <button class="btn reserve" data-id="${room.id}" data-type="${type}" aria-label="Reserve ${type}">Reserve</button>
+            <button class="btn-ghost details" data-scroll="#rooms">View</button>
+            <div style="margin-left:auto" class="small muted"><span class="pill">Pay: UPI / Card</span></div>
+          </div>
+        `;
+
+        requestAnimationFrame(() => {
+          const pct = total > 0 ? Math.round( (filled / total) * 100 ) : 0;
+          const bar = card.querySelector('.progress-bar');
+          bar.style.width = pct + '%';
+          if(total > 0 && (total - filled) <= 1){
+            bar.style.background = 'linear-gradient(90deg,var(--accent),var(--danger))';
+          }
+        });
+
+        return card;
+      }
+
+      rooms.forEach(r => {
+        roomList.appendChild(createRoomCard(r));
+        grid.appendChild(createAvailCard(r));
+      });
+
+      // hero available counter update
+      function updateHeroAvailable(){
+        const availEls = $$('.avail-card .stat-available');
+        let sum = 0;
+        availEls.forEach(s => { sum += parseInt(s.textContent || '0',10); });
+        $('#heroAvailable').textContent = sum;
+      }
+      updateHeroAvailable();
+
+      // Reserve logic (update counts and progress)
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.reserve');
+        if(!btn) return;
+        const card = btn.closest('.avail-card');
+        const availEl = card.querySelector('.stat-available');
+        const filledEl = card.querySelector('.stat-filled');
+        const totalEl = card.querySelector('.stat-total');
+        let avail = parseInt(availEl.textContent,10), filled = parseInt(filledEl.textContent,10), total = parseInt(totalEl.textContent,10);
+        if(avail <= 0){
+          btn.textContent = 'Full';
+          btn.disabled = true;
+          btn.style.opacity = 0.7;
+          return;
+        }
+        avail -= 1; filled += 1;
+        availEl.textContent = avail; filledEl.textContent = filled;
+        const bar = card.querySelector('.progress-bar');
+        const pct = total > 0 ? Math.round( (filled / total) * 100 ) : 0;
+        bar.style.width = pct + '%';
+        if(avail <= 1) bar.style.background = 'linear-gradient(90deg,var(--accent),var(--danger))';
+        updateHeroAvailable();
+        btn.textContent = 'Reserved ✓';
+        btn.disabled = true;
+        setTimeout(()=>{ btn.textContent = 'Reserve'; btn.disabled = false; }, 1500);
+      });
+
+      // view scroll
+      grid.addEventListener('click', (e) => {
+        const v = e.target.closest('.details');
+        if(!v) return;
+        const target = document.querySelector(v.dataset.scroll || '#rooms');
+        if(target) target.scrollIntoView({behavior:'smooth'});
+      });
+    })();
+
+    // Booking form interactions
+    (function(){
+      $('#bookingForm').addEventListener('submit', e => {
+        e.preventDefault();
+        $('#bookStatus').textContent = 'Processing...';
+        setTimeout(() => {
+          $('#bookStatus').textContent = '';
+          $('#bookThanks').style.display = 'block';
+          $('#bookingForm').reset();
+        }, 900);
+      });
+      $('#bookReset').addEventListener('click', () => { $('#bookingForm').reset(); $('#bookStatus').textContent=''; $('#bookThanks').style.display='none'; });
+      $('#newsletterForm').addEventListener('submit', e => { e.preventDefault(); alert('Thanks — you are subscribed'); $('#newsletterForm').reset(); });
+      $('#heroQuickForm').addEventListener('submit', e => { e.preventDefault(); $('#hq_msg').style.display='block'; $('#hq_msg').textContent='Quick reservation received — we will contact you.'; setTimeout(()=>{ $('#hq_msg').style.display='none'; $('#heroQuickForm').reset(); },1600); });
+      $('#heroContact').addEventListener('click', ()=> location.href='#contact');
+      $('#quickContact').addEventListener('click', ()=> location.href='tel:+911234567890');
+      $('#heroBook').addEventListener('click', ()=> { alert('Virtual tour coming soon!'); });
+    })();
+
+    // Reviews slider nav
+    (function(){
+      const track = $('#reviewsTrack');
+      const prev = $('#revPrev'), next = $('#revNext');
+      let pos = 0;
+      prev.addEventListener('click', () => { pos = Math.max(0, pos-1); track.scrollTo({left: pos*320, behavior:'smooth'}); });
+      next.addEventListener('click', () => { pos = Math.min(Math.max(0, track.children.length-1), pos+1); track.scrollTo({left: pos*320, behavior:'smooth'}); });
+    })();
+
+    // Accessibility: banner dots keyboard
+    (function(){
+      $$('#bannerDots .banner-dot').forEach(d => {
+        d.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.click(); }});
+      });
+    })();
+  </script>
+</body>
+</html>
